@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2"></div><!-- end col-md-2-->
+			<div class="col-md-10">
+				<h4>Device: {{laptop.cbhs_code}}</h4>
+				<br><br>
+				<p>Status: &nbsp; &nbsp; {{laptop.status}}</p>
+				<p>Date Received: &nbsp; &nbsp; {{laptop.date_received}}</p>
+				<p>Make: &nbsp; &nbsp; {{laptop.make}}</p>
+				<p>Worked On By: &nbsp; &nbsp; {{laptop.worked_on_by}}</p>
+				<p>Cpu Temps: &nbsp; &nbsp; {{laptop.cpu_temps}}</p>
+				<p>Notes: &nbsp; &nbsp; {{laptop.notes}}</p>
+				<a class="btn btn-primary" href="{% url 'update' laptop.id %}">
+					Edit
+				</a>
+			</div><!-- end col-md-10-->
+			<div class="col-md-2"></div><!-- end col-md-2-->
+			
+			
+		</div><!-- end row -->
+			<a href="{% url 'view_database' %}">View the laptop/desktop database</a>
+	</div><!-- end container -->
+	
+{% endblock %}

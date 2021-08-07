@@ -1,0 +1,51 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+	<br>
+	<!-- My search bar-->
+	<div class="form-group">
+		<form method="get">
+		{{my_filter.form}}
+
+		<button class="btn btn-primary" type="submit">Search</button>
+	    <!--<label for="searching">Search for a computer</label>
+	    <input type="search" class="form-control" id="searchBar" placeholder="e.g. HP 820">-->
+	</form>
+  	</div>
+
+	<br>
+	<!-- actual table of laptops -->
+	<table class="table">
+	  <thead class="thead-dark">
+	    <tr>
+	    <!-- Header tags -->
+	      <th scope="col">Serial Number</th>
+	      <th scope="col">Model</th>
+	      <th scope="col">Status</th>
+	      <th scope="col">Battery %</th>
+	    </tr>
+	  </thead>
+	  <tbody id="myTable">
+	  	<!-- For loop to scrape database and display each individual laptop -->
+	  	{% for laptop in laptops %}
+	  	<tr>
+	      <th scope="row"><a href="{% url 'laptop_detail' laptop.id %}">{{laptop.cbhs_code}}</a></th>
+	      <td>{{laptop.model}}</td>
+	      <td>{{laptop.status}}</td>
+	      <td>{{laptop.battery_tested}}</td>
+	    </tr>
+	    {% endfor %}
+	  </tbody>
+	</table>
+
+	<script>
+		$(document).ready(function(){
+		  $("#searchBar").on("keyup", function() {
+		    var value = $(this).val().toLowerCase();
+		    $("#myTable tr").filter(function() {
+		      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		    });
+		  });
+		});
+	</script>
+{% endblock %}

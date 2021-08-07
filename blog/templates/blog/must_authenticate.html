@@ -1,0 +1,14 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+	<div class="container">
+		<div class="d-flex flex-coloumn">
+			<p class="m-auto">Must Authenticate to view this page</p><!-- end m-auto -->
+			<p class="m-auto">
+				<a href="{% url 'register' }">Register</a> or
+				<a href="{% url 'login' }">Login</a>
+			</p>
+		</div><!-- end d-flex -->
+	</div><!-- end container -->
+	
+{% endblock %}
