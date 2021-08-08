@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'ymoc)np#e+xrghiao=2456jkqf#h81
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['cbhs-laptop-refurb.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['desolate-dawn-37370.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
