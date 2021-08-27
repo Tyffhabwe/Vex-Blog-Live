@@ -8,29 +8,65 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
-    <title>My blog</title>
-  </head>
-  <body>
-        <!-- As a link -->
-    <nav class="navbar navbar-light bg-light">
-      <a class="navbar-brand" href="{% url 'frontpage'%}">Navbar</a>
-    </nav>
+    <!-- Fonts I can use-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@1,100&display=swap" rel="stylesheet">
 
-    <section class="section">
-        <div class="container">
-            
+    <!-- font-family: 'Epilogue', sans-serif; -->
+    <!-- link to my personal stylesheet -->
+    <link rel="stylesheet" href="stylesheet.css">
+
+    <title>My blog</title>
+    <style type="text/css">
+      .success{
+        list-style: none;
+        background-color: red;
+        color: white;
+        text-align: center;
+      }
+      .error{
+        list-style: none;
+        background-color: red;
+        color: white;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body class="bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+    <a class="navbar-brand" href="{% url 'frontpage' %}">CBHS Laptop refurbishment</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'frontpage' %}">Home<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'view_database' %}">Database</a>
+        </li>
+      </ul>
+          {% if user.is_authenticated %}
+            Welcome, {{ user.get_username }} &nbsp
+            <a href="{% url 'logout'%}?next={{request.path}}">Logout</a>
+
+          {% else %}
+            <a href="{% url 'login'%}?next={{request.path}}">Login</a>
+          {% endif %}  
+    </div>
+  </div><!-- end of container class -->
+  </nav>
+  <br>
+  <div class="content">
+      <div class="container">
                 {% block content %}
                 {% endblock %}
-
-                {% if user.is_authenticated %}
-                     <li>User: {{ user.get_username }}</li>
-                     <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-                {% else %}
-                     <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-                {% endif %} 
-        </div>
-    </section>
-
+      </div><!-- end container --> 
+    </div><!-- end content --> 
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->

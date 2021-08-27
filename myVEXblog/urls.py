@@ -24,7 +24,6 @@ urlpatterns = [
     path('', frontpage, name='frontpage'),
     path('<slug:slug>/', post_detail, name='post_detail'),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('update_page', get_data, name='get_data'),
     path('view_database', view_database, name='view_database'),
     path("register", register_request, name="register"),
     path("laptop/<int:laptop_id>/", laptop_detail, name='laptop_detail'),

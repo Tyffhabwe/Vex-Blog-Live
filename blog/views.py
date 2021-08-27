@@ -1,3 +1,4 @@
+#My dependacies, often just files from other pages
 import openpyxl
 import logging
 import os
@@ -46,22 +47,23 @@ def change_date_to_needed(time_value):
 	except:
 		return(datetime.now())
 
-# Create your views here.
+#Function for what pages the frontpage displayes
 def frontpage(request):
 	posts = Post.objects.all()
 	return render(request, 'blog/frontpage.html', {'posts': posts})
 
+#Function for what each individual post page displays
 def post_detail(request, slug):
 	post = Post.objects.get(slug=slug)
 
 	return render(request, 'blog/post_detail.html', {'post': post})
-
+#Function to take data from database and display it onto a table
 def view_database(request):
 	laptops = Laptop.objects.all()
 	my_filter = LaptopFilter(request.GET, queryset=laptops)
 	laptops = my_filter.qs
 	return render(request, 'blog/view_database.html', {'laptops': laptops, 'my_filter': my_filter})
-
+#Displays individual laptopdata from the view_database page.
 def laptop_detail(request, laptop_id):
 	laptop = Laptop.objects.get(pk=laptop_id)
 
@@ -88,10 +90,11 @@ def laptop_detail(request, laptop_id):
 
 	return render(request, 'blog/create_laptop.html', context)
 """
+#Redirect users that have not authenticated
 def must_authenticate(request):
 	return render(request, 'blog/must_authenticate.html')
 
-@login_required
+@login_required #Make sure users have authenticated
 def create_laptop_view(request):
 	form = CreateLaptopForm(request.POST or None, request.FILES or None)
 
@@ -106,6 +109,7 @@ def create_laptop_view(request):
 
 	return render(request, 'blog/create_laptop.html', context)
 
+#For page that allows new laptops to be made/edit existing ones
 def update_view(request, laptop_id):
 	laptop = get_object_or_404(Laptop, id=laptop_id)
 	form = CreateLaptopForm(request.POST or None, request.FILES or None, instance=laptop)
@@ -125,7 +129,7 @@ def update_view(request, laptop_id):
 
 
 
-def get_data(request):
+"""def get_data(request):
 
 	workbook = load_workbook(filename="laptop_tracking.xlsx")
 
@@ -195,7 +199,8 @@ def get_data(request):
 			slug = slug,
 		 	)
 	return HttpResponse("It worked!")
-		 	
+"""	
+#Allow new users to register	 	
 def register_request(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
