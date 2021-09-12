@@ -76,7 +76,7 @@ class Receiver(models.Model):
 class Laptop(models.Model):
 	"""This is the 'table' for laptops and what values each laptop will have. Some are many-to-one relationships with another table."""
 	status = models.CharField(choices=status_choice, null=True, max_length=255)
-	cbhs_code =  models.CharField(max_length=255, null=True)
+	cbhs_code =  models.CharField(max_length=20, null=True)
 	date_received = models.DateTimeField(null=True)
 	received_from = models.ForeignKey(Provider, null=True, blank=True, on_delete=models.CASCADE)
 	model = models.ForeignKey(Laptop_Model, null=True, blank=True, on_delete=models.CASCADE)

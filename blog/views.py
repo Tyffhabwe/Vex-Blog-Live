@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect, HttpResponseRedirect, get_object_
 from .models import Post, Laptop
 from django.contrib.auth.decorators import login_required
 from .filters import LaptopFilter
-from .forms import NewUserForm, CreateLaptopForm
+from .forms import RegisterForm, CreateLaptopForm
 from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -126,82 +126,8 @@ def update_view(request, laptop_id):
 	}
 	return render(request, 'blog/create_laptop.html', context)
 
-
-
-
-"""def get_data(request):
-
-	workbook = load_workbook(filename="laptop_tracking.xlsx")
-
-	sheet = workbook.active
-
-	for row in sheet.iter_rows(min_row=3, values_only=True):
-		#Adding the data
-		status = row[1]
-		cbhs_code =  row[2]
-		date_received = str(row[3])
-		received_from = row[4]
-		make = row[5]
-		model = row[6]
-		serial_number = row[7]
-		worksheet_printed = row[8]
-		cpu_model = row[9]
-		cpu_speed = row[10]
-		ram_in_gigabytes = row[11]
-		storage = row[12]
-		drive_capacity = row[13]
-		does_it_boot = row[14]
-		os_installed =  row[15]
-		battery_tested =  row[16]
-		hdd_ssd_chkdsk = row[17]
-		cpu_temps =  row[18]
-		keyboard = row[20]
-		trackpad = row[21]
-		usb = row[22]	
-		display_out = row[23]
-		actions_required = row[24]
-		date_last_worked_on = str(row[25])
-		notes = row[26]
-		worked_on_by = row[27]
-		signed_off_by = row[28]
-		sent_to = row[29]
-		slug = row[30]
-
-		_, created = Laptop.objects.get_or_create(
-			status = status,
-			cbhs_code =  cbhs_code,
-			date_received = change_date_to_needed(date_received),
-			received_from = received_from,
-			make = make,
-			model = model,
-			serial_number = serial_number,
-			worksheet_printed = true_or_false(worksheet_printed),
-			cpu_model = cpu_model,
-			cpu_speed = cpu_speed,
-			ram_in_gigabytes = ram_in_gigabytes,
-			storage = storage,
-			drive_capacity = drive_capacity,
-			does_it_boot = true_or_false(does_it_boot),
-			os_installed =  os_installed,
-			battery_tested =  battery_tested,
-			hdd_ssd_chkdsk = true_or_false(hdd_ssd_chkdsk),
-			cpu_temps =  cpu_temps,
-			keyboard = true_or_false(keyboard),
-			trackpad = true_or_false(trackpad),
-			usb = true_or_false(usb),
-			display_out = true_or_false(display_out),
-			actions_required = actions_required,
-			date_last_worked_on = change_date_to_needed(date_last_worked_on),
-			notes = notes,
-			worked_on_by = worked_on_by,
-			signed_off_by = signed_off_by,
-			sent_to = sent_to,
-			slug = slug,
-		 	)
-	return HttpResponse("It worked!")
-"""	
-#Allow new users to register	 	
-def register_request(request):
+# Allow new users to register	 	
+"""def register_request(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
 		if form.is_valid():
@@ -212,3 +138,26 @@ def register_request(request):
 		messages.error(request, "Unsuccessful registration. Invalid information.")
 	form = NewUserForm()
 	return render (request=request, template_name="blog/register.html", context={"register_form":form})
+	return render(request, "blog/register.html", {"form": form})
+	"""
+def register_request(request):
+	form = RegisterForm(request.POST or None)
+	if form.is_valid():
+		username = form.cleaned_data.get("username")
+		email = form.cleaned_data.get("email")
+		password = form.cleaned_data.get("password1")
+		password2 = form.cleaned_data.get("password2")
+
+		if password == password2:
+			try:
+				user = User.objects.create_user(username, email, password2)
+			except:
+				user = None
+			if user != None:
+				login(request, user)
+				return redirect("/")
+		else:
+			request.session['register_error'] = 1
+			messages.error(request, "Your two passwords do not match")
+	return render(request, "blog/register.html", {"form":form})       		
+	
