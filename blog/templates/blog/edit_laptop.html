@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="container">
+	<div class="card bg-light">
+		<div class="card-body">
+			<div class="form-group">
+			<form method="post" enctype="multipart/form-data">{% csrf_token %}
+
+				{{ form.as_p }}
+			    <p>Worked on by: &nbsp {{ laptop.technician }}</p>
+			  <button type="button submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div><!-- end form group -->
+		</div><!-- end card body -->
+	</div><!-- end card -->
+</div><!-- end container -->
+{% endblock %}

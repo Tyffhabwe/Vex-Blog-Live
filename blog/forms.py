@@ -4,22 +4,6 @@ from django.contrib.auth.models import User
 from .models import Laptop
 
 non_allowed_usernames = ['I can put any swear words here']
-
-
-# Form to allow a new user to be created
-"""class NewUserForm(UserCreationForm):
-	email = forms.EmailField(required=True)
-
-	class Meta:
-		model = User
-		fields = ("username", "email", "password1", "password2")
-
-	def save(self, commit=True):
-		user = super(NewUserForm, self).save(commit=False)
-		user.email = self.cleaned_data['email']
-		if commit:
-			user.save()
-		return user"""
 # Creating my own form tends to allow greater flexibility on what I can make it do.
 class RegisterForm(forms.Form):
     username = forms.CharField(
@@ -94,11 +78,10 @@ class CreateLaptopForm(forms.ModelForm):
 		model = Laptop
 		# What can be edited
 		fields = ['status', 'cbhs_code', 'received_from', 'model', 
-		'does_it_boot', 'os_installed', 'battery_tested', 
+		'os_installed', 'battery_tested',  'does_it_boot',
 		'hdd_ssd_chkdsk', 
 		'cpu_temps', 'keyboard', 'trackpad', 
-		'usb', 'display_out', 'notes',
-		'technician', 'sent_to']
+		'usb', 'display_out', 'notes', 'sent_to']
 
 		widgets = {
 		# Styling the form so that it looks good
@@ -106,18 +89,14 @@ class CreateLaptopForm(forms.ModelForm):
 			'cbhs_code': forms.TextInput(attrs={'class':'form-control'}),
 			'received_from': forms.Select(attrs={'class':'form-control'}),
 			'model': forms.Select(attrs={'class':'form-control'}),
-			'does_it_boot': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'os_installed': forms.Select(attrs={'class':'form-control'}),
 			'battery_tested': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'hdd_ssd_chkdsk': forms.NullBooleanSelect(attrs={'class':'form-control'}),
-			'does_it_boot': forms.NumberInput(attrs={'class':'form-control'}),
+			'does_it_boot': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'keyboard': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'trackpad': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'usb': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'display_out': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'notes': forms.Textarea(attrs={'class':'form-control'}),
-			'technician': forms.Select(attrs={'class':'form-control'}),
 			'sent_to': forms.Select(attrs={'class':'form-control'}),
-
-
 		}

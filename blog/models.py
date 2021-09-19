@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 # Create your models here.
 
@@ -9,6 +10,8 @@ status_choice = [
 	('Waiting for Parts', 'Waiting for Parts'),
 	('Complete', 'Complete'),
 ]
+# Set the technichian value to whoever is currently logged in so people can't just select that themselves
+User = settings.AUTH_USER_MODEL
 class Post(models.Model):
 	"""This is a 'table' for posts and what values each post will have"""
 	title = models.CharField(max_length=255)
@@ -80,8 +83,8 @@ class Laptop(models.Model):
 	date_received = models.DateTimeField(null=True)
 	received_from = models.ForeignKey(Provider, null=True, blank=True, on_delete=models.CASCADE)
 	model = models.ForeignKey(Laptop_Model, null=True, blank=True, on_delete=models.CASCADE)
-	does_it_boot = models.BooleanField(null=True)
 	os_installed =  models.ForeignKey(Operating_System, null=True, blank=True, on_delete=models.CASCADE)
+	does_it_boot = models.BooleanField(null=True)
 	battery_tested =  models.BooleanField(null=True)
 	hdd_ssd_chkdsk = models.BooleanField(null=True)
 	cpu_temps =  models.IntegerField(null=True, blank=True)
@@ -94,8 +97,8 @@ class Laptop(models.Model):
 	date_last_worked_on = models.DateTimeField(null=True)
 	notes = models.TextField(null=True, blank=True)
 	signed_off_by = models.CharField(max_length=255, null=True, blank=True)
-	sent_to = models.ForeignKey(Receiver, null=True, blank=True, on_delete=models.CASCADE)
-	technician = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	sent_to = models.ForeignKey(Receiver, null=True, blank=True, on_delete=models.SET_NULL)
+	technician = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
 	class Meta:
 		ordering = ['-cbhs_code']

@@ -69,27 +69,6 @@ def laptop_detail(request, laptop_id):
 
 	return render(request, 'blog/laptop_detail.html', {'laptop': laptop})
 
-"""def create_laptop_view(request):
-	context = {}
-
-	user = request.user
-
-	if not user.is_authenticated:
-		return redirect('must_authenticate')
-
-	form = CreateLaptopForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		obj = form.save(commit=False)
-		worked_on_by = User.objects.filter(email=user.email).first()
-		obj.worked_on_by = worked_on_by
-		obj.save()
-
-		form = CreateLaptopForm()
-
-	context['form'] = form
-
-	return render(request, 'blog/create_laptop.html', context)
-"""
 #Redirect users that have not authenticated
 def must_authenticate(request):
 	return render(request, 'blog/must_authenticate.html')
@@ -104,12 +83,15 @@ def create_laptop_view(request):
 	}
 
 	if form.is_valid():
-		laptop = form.save()
+		laptop = form.save(commit=False)
+		laptop.technician = request.user
+		laptop.save()
 		return HttpResponseRedirect('/')
 
 	return render(request, 'blog/create_laptop.html', context)
 
 #For page that allows new laptops to be made/edit existing ones
+@login_required
 def update_view(request, laptop_id):
 	laptop = get_object_or_404(Laptop, id=laptop_id)
 	form = CreateLaptopForm(request.POST or None, request.FILES or None, instance=laptop)
@@ -124,22 +106,8 @@ def update_view(request, laptop_id):
 		'laptop':laptop
 
 	}
-	return render(request, 'blog/create_laptop.html', context)
+	return render(request, 'blog/edit_laptop.html', context)
 
-# Allow new users to register	 	
-"""def register_request(request):
-	if request.method == "POST":
-		form = NewUserForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			login(request, user)
-			messages.success(request, "Registration successful." )
-			return redirect("frontpage")
-		messages.error(request, "Unsuccessful registration. Invalid information.")
-	form = NewUserForm()
-	return render (request=request, template_name="blog/register.html", context={"register_form":form})
-	return render(request, "blog/register.html", {"form": form})
-	"""
 def register_request(request):
 	form = RegisterForm(request.POST or None)
 	if form.is_valid():
@@ -147,17 +115,19 @@ def register_request(request):
 		email = form.cleaned_data.get("email")
 		password = form.cleaned_data.get("password1")
 		password2 = form.cleaned_data.get("password2")
-
-		if password == password2:
-			try:
-				user = User.objects.create_user(username, email, password2)
-			except:
-				user = None
-			if user != None:
-				login(request, user)
-				return redirect("/")
+		if len(password2) >= 8:
+			if password == password2:
+				try:
+					user = User.objects.create_user(username, email, password2)
+				except:
+					user = None
+				if user != None:
+					login(request, user)
+					return redirect("/")
+			else:
+				messages.error(request, "Your two passwords do not match")
 		else:
 			request.session['register_error'] = 1
-			messages.error(request, "Your two passwords do not match")
+			messages.error(request, "Your password needs to be at least 8 characters long.")
 	return render(request, "blog/register.html", {"form":form})       		
 	
