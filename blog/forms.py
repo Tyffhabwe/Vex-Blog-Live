@@ -6,6 +6,7 @@ from .models import Laptop
 non_allowed_usernames = ['I can put any swear words here']
 # Creating my own form tends to allow greater flexibility on what I can make it do.
 class RegisterForm(forms.Form):
+    # Registers users.
     username = forms.CharField(
     	label='Username',
         widget=forms.TextInput(
@@ -73,7 +74,7 @@ class RegisterForm(forms.Form):
 
 
 class CreateLaptopForm(forms.ModelForm):
-
+# Self explanatory. Form to create a laptop
 	class Meta:
 		model = Laptop
 		# What can be edited

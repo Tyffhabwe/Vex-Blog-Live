@@ -52,11 +52,6 @@ def frontpage(request):
 	posts = Post.objects.all()
 	return render(request, 'blog/frontpage.html', {'posts': posts})
 
-#Function for what each individual post page displays
-def post_detail(request, slug):
-	post = Post.objects.get(slug=slug)
-
-	return render(request, 'blog/post_detail.html', {'post': post})
 #Function to take data from database and display it onto a table
 def view_database(request):
 	laptops = Laptop.objects.all()
@@ -108,6 +103,7 @@ def update_view(request, laptop_id):
 	}
 	return render(request, 'blog/edit_laptop.html', context)
 
+# Allows the user to register a new account
 def register_request(request):
 	form = RegisterForm(request.POST or None)
 	if form.is_valid():
