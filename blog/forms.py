@@ -79,8 +79,8 @@ class CreateLaptopForm(forms.ModelForm):
 		model = Laptop
 		# What can be edited
 		fields = ['status', 'cbhs_code', 'received_from', 'model', 
-		'os_installed', 'battery_tested',  'does_it_boot',
-		'hdd_ssd_chkdsk', 
+		'os_installed', 'battery_wear_level',  'does_it_boot',
+		'hdd_ssd_chkdsk', 'optimisation_script',
 		'cpu_temps', 'keyboard', 'trackpad', 
 		'usb', 'display_out', 'notes', 'sent_to']
 
@@ -91,9 +91,9 @@ class CreateLaptopForm(forms.ModelForm):
 			'received_from': forms.Select(attrs={'class':'form-control'}),
 			'model': forms.Select(attrs={'class':'form-control'}),
 			'os_installed': forms.Select(attrs={'class':'form-control'}),
-			'battery_tested': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'hdd_ssd_chkdsk': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'does_it_boot': forms.NullBooleanSelect(attrs={'class':'form-control'}),
+            'optimisation_script': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'keyboard': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'trackpad': forms.NullBooleanSelect(attrs={'class':'form-control'}),
 			'usb': forms.NullBooleanSelect(attrs={'class':'form-control'}),
